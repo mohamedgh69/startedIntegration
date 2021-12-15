@@ -16,15 +16,25 @@
 		channel="channelEntree" 
     	directory="dataIn"
     	filename-pattern="*.txt">
-    		<int:poller id="poller" fixed-delay="1000" />
+        <int:poller id="poller" fixed-delay="1000" />
     </int-file:inbound-channel-adapter>
 
+    <int-file:splitter id="splitter" apply-sequence="false" charset="UTF-8" first-line-as-header="true"
+                       input-channel="channelEntree" output-channel="SplitterChannel" auto-startup="true"/>
 
-    <int-file:file-to-string-transformer input-channel="channelEntree" output-channel="responseChannel"
-                                         delete-files="false" charset="UTF-8"/>
+    <int:channel id="SplitterChannel"/>
 
-    <int:channel id="responseChannel"></int:channel>
+    <int:header-value-router id="myRouter" input-channel="SplitterChannel" header-name="file_name" resolution-required="false">
+        <int:mapping value="songs.csv" channel="SongsChannel"/>
+        <int:mapping value="singers.csv" channel="SingersChannel"/>
+    </int:header-value-router>
 
-    <int:logging-channel-adapter id="responseChannel" level="INFO"/>
+    <int:transformer input-channel="SongsChannel" output-channel="OutputChannel" ref="ToObject" method="Song"/>
+    <int:transformer input-channel="SingersChannel" output-channel="OutputChannel" ref="ToObject" method="Actor" />
+
+    <int:object-to-json-transformer input-channel="OutputChannel" output-channel="OutputJsonChannel"/>
+    <int:channel id="OutputJsonChannel"/>
+    <int-file:outbound-channel-adapter id="OJsonActors" channel="OutputJsonChannel" filename-generator="nameGenerator"
+                                       directory="./dataOut" append-new-line="true" />
 
 </beans>
