@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.StringReader;
 
 @Component
-public class ToObject {
+public class CsvToObject {
 
     @SneakyThrows
     public Song Song(String o) {
@@ -16,11 +16,10 @@ public class ToObject {
         String[] parts = reader.readNext();
 
         return Song.builder()
-                .label(parts[0])
-                .id(parts[1])
-                .title(parts[2])
-                .date(Integer.parseInt(parts[3]))
-                .listening(Integer.parseInt(parts[4]))
+                .id(parts[0])
+                .title(parts[1])
+                .date(Integer.parseInt(parts[2]))
+                .listening((parts[3]))
                 .build();
     }
 
@@ -31,8 +30,9 @@ public class ToObject {
         String[] parts = reader.readNext();
 
         return Singer.builder()
-                .id(parts[0])
-                .name(parts[1])
+                .label(parts[0])
+                .id(parts[1])
+                .name(parts[2])
                 .build();
     }
 }

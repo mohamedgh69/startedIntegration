@@ -1,6 +1,6 @@
-Label, id,Title,Date,Listenings
-Rec118,1,La vie qu'on mÃ¨ne,2019,90.000.000
-Rec118,2,Vie de star,2021, 30.000.000
-92i,3,Yakalelo,2021,  15.000.000
-QLF,4,Chang,2019, 40.000.000
-Ambition Music,5,Printemps Blanc,2017, 12.000.000
+id,Title,Date,Listenings
+1,La vie qu'on mÃ¨ne,2019,90 000 000
+2,Vie de star,2021, 30 000 000
+3,Yakalelo,2021,  15 000 000
+4,Chang,2019, 40 000 000
+5,Printemps Blanc,2017, 12 000 000
