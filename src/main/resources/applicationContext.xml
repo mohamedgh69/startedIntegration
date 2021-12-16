@@ -23,11 +23,11 @@
     </int-file:inbound-channel-adapter>
 
     <int-file:splitter id="splitter" apply-sequence="false" charset="UTF-8" first-line-as-header="true"
-                       input-channel="CsvInputChannel" output-channel="AfterSplitterBeforeRouterChannel" auto-startup="true"/>
+                       input-channel="CsvInputChannel" output-channel="SplitterChannel" auto-startup="true"/>
 
-    <int:channel id="AfterSplitterBeforeRouterChannel"/>
+    <int:channel id="SplitterChannel"/>
 
-    <int:header-value-router id="customRouter" input-channel="AfterSplitterBeforeRouterChannel" header-name="file_name" resolution-required="false">
+    <int:header-value-router id="myRouter" input-channel="SplitterChannel" header-name="file_name" resolution-required="false">
         <int:mapping value="songs.csv" channel="SongChannel"/>
         <int:mapping value="singers.csv" channel="SingerChannel"/>
     </int:header-value-router>
@@ -35,9 +35,12 @@
     <int:transformer input-channel="SongChannel" output-channel="OutputChannel" ref="csvToObject" method="Song"/>
     <int:transformer input-channel="SingerChannel" output-channel="OutputChannel" ref="csvToObject" method="Singer" />
 
-    <int:object-to-json-transformer input-channel="OutputChannel" output-channel="OJsonChannel"/>
-    <int:channel id="OJsonChannel"/>
-    <int-file:outbound-channel-adapter id="OJsonActors" channel="OJsonChannel"
-                                       directory="./dataOut" append-new-line="true" />
+    <int:object-to-json-transformer input-channel="OutputChannel" output-channel="JsonChannel"/>
+
+    
+    <int:channel id="JsonChannel"/>
+
+
+    <int-file:outbound-channel-adapter id="JsonActors" channel="JsonChannel" filename-generator="filename" directory="./dataOut"/>
 
 </beans>
