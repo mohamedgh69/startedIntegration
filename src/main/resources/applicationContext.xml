@@ -37,7 +37,7 @@
 
     <int:object-to-json-transformer input-channel="OutputChannel" output-channel="JsonChannel"/>
 
-    
+
     <int:channel id="JsonChannel"/>
 
 
